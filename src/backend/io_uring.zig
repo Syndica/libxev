@@ -732,6 +732,7 @@ pub const Completion = struct {
             .shutdown => .{
                 .shutdown = if (res >= 0) {} else switch (@as(posix.E, @enumFromInt(-res))) {
                     .CANCELED => error.Canceled,
+                    .NOTCONN => error.SocketNotConnected,
                     else => |errno| posix.unexpectedErrno(errno),
                 },
             },
@@ -1083,6 +1084,7 @@ pub const ReadError = error{
 
 pub const ShutdownError = error{
     Canceled,
+    SocketNotConnected,
     Unexpected,
 };
 
